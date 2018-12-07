@@ -26,7 +26,7 @@ namespace Platform
 
 void StopEmu();
 
-void* Thread_Create(void (*func)());
+void* Thread_Create(s32 (*func)(s32, void*));
 void Thread_Free(void* thread);
 void Thread_Wait(void* thread);
 

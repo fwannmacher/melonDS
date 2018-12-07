@@ -65,7 +65,7 @@ void* Sema_RenderStart;
 void* Sema_RenderDone;
 void* Sema_ScanlineCount;
 
-void RenderThreadFunc();
+s32 RenderThreadFunc(s32 _, void* __);
 
 
 void StopRenderThread()
@@ -2076,12 +2076,12 @@ void RenderFrame()
     }
 }
 
-void RenderThreadFunc()
+s32 RenderThreadFunc(s32 _, void* __)
 {
     for (;;)
     {
         Platform::Semaphore_Wait(Sema_RenderStart);
-        if (!RenderThreadRunning) return;
+        if (!RenderThreadRunning) return -1;
 
         RenderThreadRendering = true;
         ClearBuffers();
@@ -2090,6 +2090,8 @@ void RenderThreadFunc()
         Platform::Semaphore_Post(Sema_RenderDone);
         RenderThreadRendering = false;
     }
+
+    return 0;
 }
 
 void RequestLine(int line)
